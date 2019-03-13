@@ -18,7 +18,7 @@ public class ProductsFragmet extends ProductFragment<ProductsFragmentBinding> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getViewModel().getProducts().observe(this, new Observer<List<ProductContract>>() {
+        getViewModel().getProductsLiveData().observe(this, new Observer<List<ProductContract>>() {
             @Override
             public void onChanged(@Nullable List<ProductContract> productContracts) {
 
