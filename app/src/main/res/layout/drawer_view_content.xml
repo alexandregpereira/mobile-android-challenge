@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerContainer"
+    android:background="?android:colorBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:src="@mipmap/ic_launcher_round"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="8dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="8dp" />
+
+        <TextView
+            style="@style/DrawerTitleLabel"
+            android:id="@+id/orderLabelTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/order_by_price"
+            app:layout_constraintTop_toBottomOf="@id/guidelineHeader"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            app:layout_constraintTop_toBottomOf="@id/orderLabelTextView"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/priceLowHighRadio"
+                android:text="@string/low_high"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/priceHighLowRadio"
+                android:text="@string/high_low"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
+        <TextView
+            style="@style/DrawerTitleLabel"
+            android:id="@+id/filterLabelTextView"
+            android:text="@string/filter"
+            app:layout_constraintTop_toBottomOf="@id/radioGroup"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:id="@+id/onSaleCheckBox"
+            app:layout_constraintTop_toBottomOf="@id/filterLabelTextView"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            android:text="@string/on_sale"
+            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:id="@+id/discountCheckBox"
+            app:layout_constraintTop_toBottomOf="@id/onSaleCheckBox"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            android:text="@string/with_discount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/DrawerTitleLabel"
+            android:id="@+id/visualizationLabelTextView"
+            android:text="@string/visualization"
+            app:layout_constraintTop_toBottomOf="@id/discountCheckBox"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:id="@+id/visualizationRadioGroup"
+            app:layout_constraintTop_toBottomOf="@id/visualizationLabelTextView"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/gridRadio"
+                android:text="@string/grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/listRadio"
+                android:text="@string/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -12,10 +12,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container,
-                    ProductsFragment()
-                )
+                .replace(R.id.container, ProductsFragment(), "CONTAINER")
                 .commitNow()
         }
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag("CONTAINER")
+        if (fragment is OnBackPressed && fragment.onBackPressed()) return
+        super.onBackPressed()
     }
 }

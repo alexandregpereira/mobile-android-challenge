@@ -10,4 +10,16 @@
     <string name="timeout_error">Timeout. Try Again</string>
     <string name="unknown_error">I think we have some problem</string>
 
+    <!-- Drawer content -->
+    <string name="order_by_price">Order by price</string>
+    <string name="low_high">Low to high</string>
+    <string name="high_low">High to low</string>
+    <string name="filter">Filter</string>
+    <string name="on_sale">On Sale</string>
+    <string name="with_discount">With discount</string>
+    <string name="visualization">Visualization</string>
+    <string name="grid">Grid</string>
+    <string name="list">List</string>
+    <string name="menu">Menu</string>
+
 </resources>

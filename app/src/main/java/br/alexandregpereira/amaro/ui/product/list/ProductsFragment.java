@@ -2,6 +2,7 @@ package br.alexandregpereira.amaro.ui.product.list;
 
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,6 +11,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,9 +21,10 @@ import br.alexandregpereira.amaro.databinding.ProductsFragmentBinding;
 import br.alexandregpereira.amaro.exception.ConnectionError;
 import br.alexandregpereira.amaro.extension.ViewExtensionKt;
 import br.alexandregpereira.amaro.model.product.ProductContract;
+import br.alexandregpereira.amaro.ui.OnBackPressed;
 import br.alexandregpereira.amaro.ui.product.ProductFragment;
 
-public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> {
+public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> implements OnBackPressed {
 
     private final ProductsAdapter adapter = new ProductsAdapter();
 
@@ -31,6 +35,15 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> {
         getBinding().productRecyclerView.setHasFixedSize(true);
         getBinding().productRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         getBinding().productRecyclerView.setAdapter(adapter);
+
+        getBinding().toolbar.inflateMenu(R.menu.home);
+        getBinding().toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                openDrawerLayout();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -77,6 +90,28 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> {
                 getBinding().swipe.setRefreshing(loading == null ? false : loading);
             }
         });
+    }
+
+    private void openDrawerLayout() {
+        getBinding().drawerLayout.openDrawer(GravityCompat.END, true);
+    }
+
+    private void closeDraweLayout() {
+        getBinding().drawerLayout.closeDrawer(GravityCompat.END);
+    }
+
+    private boolean isDrawerLayoutOpen() {
+        return getBinding().drawerLayout.isDrawerOpen(GravityCompat.END);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (isDrawerLayoutOpen()) {
+            closeDraweLayout();
+            return true;
+        }
+
+        return false;
     }
 
     private void handleConnectionError(@NonNull ConnectionError connectionError) {
