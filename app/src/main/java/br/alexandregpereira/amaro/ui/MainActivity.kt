@@ -3,7 +3,7 @@ package br.alexandregpereira.amaro.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import br.alexandregpereira.amaro.R
-import br.alexandregpereira.amaro.ui.product.list.ProductsFragmet
+import br.alexandregpereira.amaro.ui.product.list.ProductsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,7 +12,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, ProductsFragmet())
+                .replace(R.id.container,
+                    ProductsFragment()
+                )
                 .commitNow()
         }
     }

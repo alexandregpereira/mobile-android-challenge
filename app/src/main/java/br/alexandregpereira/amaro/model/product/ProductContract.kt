@@ -10,4 +10,6 @@ interface ProductContract {
     val installments: String
     val image: String
     val sizes: List<Size>
+
+    fun hasDiscount() = discountPercentage.isNotEmpty() && actualPrice != regularPrice
 }
