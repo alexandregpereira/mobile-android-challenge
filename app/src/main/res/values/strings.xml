@@ -3,6 +3,7 @@
 
     <string name="try_again">Try Again</string>
     <string name="products_empty">We lost everything</string>
+    <string name="menu">Menu</string>
 
     <!-- Connection error messages -->
     <string name="no_internet_error">No Internet</string>
@@ -11,15 +12,15 @@
     <string name="unknown_error">I think we have some problem</string>
 
     <!-- Drawer content -->
-    <string name="order_by_price">Order by price</string>
-    <string name="low_high">Low to high</string>
-    <string name="high_low">High to low</string>
-    <string name="filter">Filter</string>
-    <string name="on_sale">On Sale</string>
-    <string name="with_discount">With discount</string>
-    <string name="visualization">Visualization</string>
-    <string name="grid">Grid</string>
-    <string name="list">List</string>
-    <string name="menu">Menu</string>
+    <string name="drawer_order_by">Order by</string>
+    <string name="drawer_low_high">Price: Low to high</string>
+    <string name="drawer_high_low">Price: High to low</string>
+    <string name="drawer_filter">Filter</string>
+    <string name="drawer_on_sale">On sale only</string>
+    <string name="drawer_with_discount">With discount only</string>
+    <string name="drawer_visualization">Visualization</string>
+    <string name="drawer_grid">Grid</string>
+    <string name="drawer_list">List</string>
+    <string name="drawer_any">Any</string>
 
 </resources>

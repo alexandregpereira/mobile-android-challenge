@@ -7,6 +7,7 @@ import br.alexandregpereira.amaro.model.product.ProductContract
 import br.alexandregpereira.amaro.exception.ConnectionException
 import br.alexandregpereira.amaro.exception.ConnectionError
 import br.alexandregpereira.amaro.remote.product.ProductRemote
+import br.alexandregpereira.amaro.ui.product.list.ProductsOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,10 +20,15 @@ open class ProductViewModel : ViewModel() {
     private val loadingLiveData = MutableLiveData<Boolean?>()
     private val errorLiveData = MutableLiveData<ConnectionError?>()
 
+    private var order = ProductsOrder.ANY
+    private var anyOrderProducts: List<ProductContract>? = null
+
     fun getProductsLiveData(): LiveData<List<ProductContract>?> {
         loadProductsRemote()
         return liveData
     }
+
+    fun getProducts(): List<ProductContract>? = liveData.value
 
     fun refresh() {
         getProductsLiveData()
@@ -34,7 +40,8 @@ open class ProductViewModel : ViewModel() {
         if (loadingLiveData.value == true) return@getCoroutineScopeMain
         loadingLiveData.value = true
         try {
-            liveData.value = remote.getProducts()
+            anyOrderProducts = remote.getProducts()
+            liveData.value = order(anyOrderProducts)
         } catch (ex: ConnectionException) {
             errorLiveData.value = ex.error
         }
@@ -42,8 +49,31 @@ open class ProductViewModel : ViewModel() {
     }
 
     fun getLoadingLiveData(): LiveData<Boolean?> = loadingLiveData
+
     fun getErrorLiveData(): LiveData<ConnectionError?> = errorLiveData
+
     fun isLiveDataEmpty(): Boolean = liveData.value.isNullOrEmpty()
+
+    fun orderBy(order: ProductsOrder) {
+        val anyOrderProducts = anyOrderProducts
+        if (order == this.order || anyOrderProducts.isNullOrEmpty()) return
+        this.order = order
+
+        liveData.value = order(anyOrderProducts)
+    }
+
+    private fun order(products: List<ProductContract>?): List<ProductContract>? {
+        if (order == ProductsOrder.ANY) {
+            return products
+        }
+
+        return products?.sortedWith(Comparator { o1, o2 ->
+            if (order == ProductsOrder.LOW_HIGH)
+                o1.getActualPriceNumber().compareTo(o2.getActualPriceNumber())
+            else
+                o2.getActualPriceNumber().compareTo(o1.getActualPriceNumber())
+        })
+    }
 
     protected open fun getCoroutineScopeMain(block: suspend CoroutineScope.() -> Unit): Job =
         CoroutineScope(Dispatchers.Main).launch(block = block)

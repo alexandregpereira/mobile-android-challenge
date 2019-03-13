@@ -48,7 +48,7 @@
             android:id="@+id/orderLabelTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/order_by_price"
+            android:text="@string/drawer_order_by"
             app:layout_constraintTop_toBottomOf="@id/guidelineHeader"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"/>
@@ -63,14 +63,21 @@
             android:layout_height="wrap_content">
 
             <RadioButton
+                android:id="@+id/anyRadio"
+                android:text="@string/drawer_any"
+                android:checked="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
                 android:id="@+id/priceLowHighRadio"
-                android:text="@string/low_high"
+                android:text="@string/drawer_low_high"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <RadioButton
                 android:id="@+id/priceHighLowRadio"
-                android:text="@string/high_low"
+                android:text="@string/drawer_high_low"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </RadioGroup>
@@ -78,7 +85,7 @@
         <TextView
             style="@style/DrawerTitleLabel"
             android:id="@+id/filterLabelTextView"
-            android:text="@string/filter"
+            android:text="@string/drawer_filter"
             app:layout_constraintTop_toBottomOf="@id/radioGroup"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
@@ -90,7 +97,7 @@
             app:layout_constraintTop_toBottomOf="@id/filterLabelTextView"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            android:text="@string/on_sale"
+            android:text="@string/drawer_on_sale"
             android:layout_marginTop="16dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
@@ -100,14 +107,14 @@
             app:layout_constraintTop_toBottomOf="@id/onSaleCheckBox"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            android:text="@string/with_discount"
+            android:text="@string/drawer_with_discount"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
         <TextView
             style="@style/DrawerTitleLabel"
             android:id="@+id/visualizationLabelTextView"
-            android:text="@string/visualization"
+            android:text="@string/drawer_visualization"
             app:layout_constraintTop_toBottomOf="@id/discountCheckBox"
             app:layout_constraintEnd_toEndOf="@id/guidelineRight"
             app:layout_constraintStart_toStartOf="@id/guidelineLeft"
@@ -125,13 +132,13 @@
 
             <RadioButton
                 android:id="@+id/gridRadio"
-                android:text="@string/grid"
+                android:text="@string/drawer_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <RadioButton
                 android:id="@+id/listRadio"
-                android:text="@string/list"
+                android:text="@string/drawer_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </RadioGroup>

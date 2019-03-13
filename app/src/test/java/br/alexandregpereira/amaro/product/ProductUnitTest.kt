@@ -1,6 +1,7 @@
 package br.alexandregpereira.amaro.product
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import br.alexandregpereira.amaro.ui.product.list.ProductsOrder
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -41,7 +42,7 @@ class ProductUnitTest {
 
     @Test
     fun getProductByName_objIsAllRight() {
-        getProducts_listIsAllRight()
+        viewModel.getProductsLiveData()
         val product = viewModel.getProductByName("T-SHIRT LEATHER DULL")
         assertNotNull(product)
         if (product == null) return
@@ -63,4 +64,81 @@ class ProductUnitTest {
             }
         }
     }
+
+    @Test
+    fun orderByLowPrice() {
+        viewModel.getProductsLiveData()
+        viewModel.orderBy(ProductsOrder.LOW_HIGH)
+
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals("PULSEIRA STYLISH", products.first().name)
+        assertEquals("CASACO WHITE FUR", products.last().name)
+    }
+
+    @Test
+    fun orderByLowPrice_refreshAfter() {
+        viewModel.getProductsLiveData()
+        viewModel.orderBy(ProductsOrder.LOW_HIGH)
+        viewModel.refresh()
+
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals("PULSEIRA STYLISH", products.first().name)
+        assertEquals("CASACO WHITE FUR", products.last().name)
+    }
+
+    @Test
+    fun orderByHighPrice() {
+        viewModel.getProductsLiveData()
+        viewModel.orderBy(ProductsOrder.HIGH_LOW)
+
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals("CASACO WHITE FUR", products.first().name)
+        assertEquals("PULSEIRA STYLISH", products.last().name)
+    }
+    @Test
+    fun orderByHighPrice_refreshAfter() {
+        viewModel.getProductsLiveData()
+        viewModel.orderBy(ProductsOrder.HIGH_LOW)
+        viewModel.refresh()
+
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals("CASACO WHITE FUR", products.first().name)
+        assertEquals("PULSEIRA STYLISH", products.last().name)
+    }
+
+    @Test
+    fun orderByAny_whenIsNotAnyOrder() {
+        viewModel.getProductsLiveData()
+        viewModel.orderBy(ProductsOrder.HIGH_LOW)
+        viewModel.orderBy(ProductsOrder.ANY)
+
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals("VESTIDO TRANSPASSE BOW", products.first().name)
+        assertEquals("PULSEIRA STYLISH", products.last().name)
+    }
+
+    @Test
+    fun orderByAny_whenIsNotAnyOrder_refreshAfter() {
+        viewModel.getProductsLiveData()
+        viewModel.orderBy(ProductsOrder.HIGH_LOW)
+        viewModel.orderBy(ProductsOrder.ANY)
+        viewModel.refresh()
+
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals("VESTIDO TRANSPASSE BOW", products.first().name)
+        assertEquals("PULSEIRA STYLISH", products.last().name)
+    }
+
 }

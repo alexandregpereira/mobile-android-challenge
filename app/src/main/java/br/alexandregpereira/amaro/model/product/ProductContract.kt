@@ -12,4 +12,12 @@ interface ProductContract {
     val sizes: List<Size>
 
     fun hasDiscount() = discountPercentage.isNotEmpty() && actualPrice != regularPrice
+
+    fun getActualPriceNumber(): Double {
+        return actualPrice
+            .replace("R$", "")
+            .replace(",", ".")
+            .trim()
+            .toDouble()
+    }
 }
