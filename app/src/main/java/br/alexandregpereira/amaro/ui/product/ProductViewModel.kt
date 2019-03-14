@@ -48,10 +48,11 @@ open class ProductViewModel : ViewModel() {
     fun isLiveDataEmpty(): Boolean = liveData.value.isNullOrEmpty()
 
     fun orderBy(order: ProductsOrder) {
-        val anyOrderProducts = anyOrderProducts
-        if (order == this.order || anyOrderProducts.isNullOrEmpty()) return
+        if (order == this.order) return
         this.order = order
 
+        val anyOrderProducts = anyOrderProducts
+        if (anyOrderProducts.isNullOrEmpty()) return
         liveData.value = filterAndOrder(anyOrderProducts)
     }
 

@@ -1,13 +1,19 @@
 package br.alexandregpereira.amaro.product
 
+import br.alexandregpereira.amaro.exception.ConnectionError
+import br.alexandregpereira.amaro.exception.ConnectionException
 import br.alexandregpereira.amaro.model.product.ProductContract
 import br.alexandregpereira.amaro.remote.product.ProductApiData
 import br.alexandregpereira.amaro.remote.product.ProductRemote
 import com.google.gson.Gson
 
-class ProductRemoteMock : ProductRemote() {
+class ProductRemoteMock(private val connectionError: Boolean = false) : ProductRemote() {
 
     override suspend fun getProducts(): List<ProductContract>? {
+        if (connectionError) {
+            throw ConnectionException(ConnectionError.UNKNOWN)
+        }
+
         val gson = Gson()
         return gson.fromJson(json, ProductApiData::class.java).products
     }

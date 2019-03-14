@@ -1,6 +1,7 @@
 package br.alexandregpereira.amaro.product
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import br.alexandregpereira.amaro.exception.ConnectionError
 import br.alexandregpereira.amaro.ui.product.list.ProductsFilter
 import br.alexandregpereira.amaro.ui.product.list.ProductsOrder
 import org.junit.Assert.*
@@ -334,5 +335,81 @@ class ProductUnitTest {
         assertEquals(7, products.size)
         assertEquals("BOLSA FLAP TRIANGLE", products.first().name)
         assertEquals("ÓCULOS DE SOL BOLD", products.last().name)
+    }
+
+    @Test
+    fun refresh_whenHasConnectionError_orderIsAny_noFilter() {
+        val viewModel = ProductTestViewModel(true)
+
+        viewModel.getProductsLiveData()
+        assertNull(viewModel.getProducts())
+        assertEquals(ConnectionError.UNKNOWN, viewModel.getErrorLiveData().value)
+
+        viewModel.connectionError = false
+        viewModel.refresh()
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals(22, products.size)
+        assertEquals("VESTIDO TRANSPASSE BOW", products.first().name)
+        assertEquals("PULSEIRA STYLISH", products.last().name)
+    }
+
+    @Test
+    fun refresh_whenHasConnectionError_orderIsLowPrice_noFilter() {
+        val viewModel = ProductTestViewModel(true)
+
+        viewModel.getProductsLiveData()
+        assertNull(viewModel.getProducts())
+        assertEquals(ConnectionError.UNKNOWN, viewModel.getErrorLiveData().value)
+
+        viewModel.connectionError = false
+        viewModel.orderBy(ProductsOrder.LOW_HIGH)
+        viewModel.refresh()
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals(22, products.size)
+        assertEquals("PULSEIRA STYLISH", products.first().name)
+        assertEquals("CASACO WHITE FUR", products.last().name)
+    }
+
+    @Test
+    fun refresh_whenHasConnectionError_orderIsAny_onSaleFilter() {
+        val viewModel = ProductTestViewModel(true)
+
+        viewModel.getProductsLiveData()
+        assertNull(viewModel.getProducts())
+        assertEquals(ConnectionError.UNKNOWN, viewModel.getErrorLiveData().value)
+
+        viewModel.connectionError = false
+        viewModel.filterBy(ProductsFilter.ON_SALE)
+        viewModel.refresh()
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals(8, products.size)
+        assertEquals("T-SHIRT LEATHER DULL", products.first().name)
+        assertEquals("ÓCULOS DE SOL AVIADOR VINTAGE", products.last().name)
+    }
+
+    @Test
+    fun refresh_whenHasConnectionError_orderIsLowPrice_onSaleFilter() {
+        val viewModel = ProductTestViewModel(true)
+
+        viewModel.getProductsLiveData()
+        assertNull(viewModel.getProducts())
+        assertEquals(ConnectionError.UNKNOWN, viewModel.getErrorLiveData().value)
+
+        viewModel.connectionError = false
+        viewModel.orderBy(ProductsOrder.LOW_HIGH)
+        viewModel.filterBy(ProductsFilter.ON_SALE)
+        viewModel.refresh()
+        val products = viewModel.getProducts()
+        assertNotNull(products)
+        if (products == null) return
+        assertEquals(8, products.size)
+        assertEquals("ÓCULOS DE SOL BOLD", products.first().name)
+        assertEquals("BOLSA FLAP TRIANGLE", products.last().name)
     }
 }
