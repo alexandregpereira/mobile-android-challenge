@@ -20,4 +20,6 @@ interface ProductContract {
             .trim()
             .toDouble()
     }
+
+    fun getDiscountPercentageOff(): String = "$discountPercentage off"
 }

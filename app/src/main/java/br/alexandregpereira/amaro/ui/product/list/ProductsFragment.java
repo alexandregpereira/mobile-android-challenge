@@ -158,7 +158,6 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
 
     private void filterBy(@NonNull ProductsFilter filter) {
         scrollToTop = true;
-        closeDrawerLayout();
         getViewModel().filterBy(filter);
     }
 

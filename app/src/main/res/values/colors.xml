@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#000000</color>
     <color name="placeholder">#19000000</color>
+    <color name="secondaryTextColor">#4D000000</color>
+    <color name="discount">#ffffff</color>
 </resources>
