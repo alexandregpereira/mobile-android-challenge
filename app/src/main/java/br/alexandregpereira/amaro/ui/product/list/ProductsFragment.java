@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -75,6 +76,20 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
             }
         });
 
+        getBinding().drawerContainer.onSaleCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filterBy(ProductsFilter.ON_SALE);
+            }
+        });
+
+        getBinding().drawerContainer.discountCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filterBy(ProductsFilter.DISCOUNT);
+            }
+        });
+
         getViewModel().getProductsLiveData().observe(this, new Observer<List<ProductContract>>() {
             @Override
             public void onChanged(@Nullable List<ProductContract> productContracts) {
@@ -141,11 +156,16 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
         }
     }
 
+    private void filterBy(@NonNull ProductsFilter filter) {
+        scrollToTop = true;
+        closeDrawerLayout();
+        getViewModel().filterBy(filter);
+    }
+
     private void orderBy(@NonNull ProductsOrder order) {
         scrollToTop = true;
         closeDrawerLayout();
         getViewModel().orderBy(order);
-
     }
 
     private void openDrawerLayout() {

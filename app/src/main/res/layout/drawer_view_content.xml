@@ -17,7 +17,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.3" />
+                app:layout_constraintGuide_percent="0.4" />
+
+            <FrameLayout
+                android:background="@color/colorAccent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/guidelineHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/logoImageView"
@@ -112,38 +121,6 @@
                 app:layout_constraintEnd_toEndOf="@id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@id/guidelineLeft"
                 app:layout_constraintTop_toBottomOf="@id/onSaleCheckBox" />
-
-            <TextView
-                android:id="@+id/visualizationLabelTextView"
-                style="@style/DrawerTitleLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/drawer_visualization"
-                app:layout_constraintEnd_toEndOf="@id/guidelineRight"
-                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@id/discountCheckBox" />
-
-            <RadioGroup
-                android:id="@+id/visualizationRadioGroup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@id/guidelineRight"
-                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@id/visualizationLabelTextView">
-
-                <RadioButton
-                    android:id="@+id/gridRadio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/drawer_grid" />
-
-                <RadioButton
-                    android:id="@+id/listRadio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/drawer_list" />
-            </RadioGroup>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
