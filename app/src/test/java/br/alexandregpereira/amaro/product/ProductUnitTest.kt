@@ -209,11 +209,11 @@ class ProductUnitTest {
     }
 
     @Test
-    fun filterByOnSale_whenHasFilterAtFilterList_orderIsAny() {
+    fun removeFilterOnSale_whenHasFilterAtFilterList_orderIsAny() {
         val viewModel = ProductTestViewModel()
         viewModel.getProductsLiveData()
         viewModel.filterBy(ProductsFilter.ON_SALE)
-        viewModel.filterBy(ProductsFilter.ON_SALE)
+        viewModel.removeFilter(ProductsFilter.ON_SALE)
 
         val products = viewModel.getProducts()
         assertNotNull(products)
@@ -224,11 +224,11 @@ class ProductUnitTest {
     }
 
     @Test
-    fun filterByOnSale_whenHasFilterAtFilterList_orderIsAny_refreshAfter() {
+    fun removeFilterOnSale_whenHasFilterAtFilterList_orderIsAny_refreshAfter() {
         val viewModel = ProductTestViewModel()
         viewModel.getProductsLiveData()
         viewModel.filterBy(ProductsFilter.ON_SALE)
-        viewModel.filterBy(ProductsFilter.ON_SALE)
+        viewModel.removeFilter(ProductsFilter.ON_SALE)
         viewModel.refresh()
 
         val products = viewModel.getProducts()
