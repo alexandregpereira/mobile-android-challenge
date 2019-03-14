@@ -2,8 +2,10 @@ package br.alexandregpereira.amaro.ui.product.list;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,6 +29,8 @@ import br.alexandregpereira.amaro.ui.product.ProductFragment;
 public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> implements OnBackPressed {
 
     private final ProductsAdapter adapter = new ProductsAdapter();
+    private boolean scrollToTop = false;
+    private final Handler handler = new Handler();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -64,15 +68,18 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
             }
         });
 
+        getBinding().drawerContainer.orderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                handleOrderRadioGroupCheckedChange(checkedId);
+            }
+        });
+
         getViewModel().getProductsLiveData().observe(this, new Observer<List<ProductContract>>() {
             @Override
             public void onChanged(@Nullable List<ProductContract> productContracts) {
                 if (productContracts == null) return;
-                boolean empty = productContracts.isEmpty();
-                ViewExtensionKt.setVisible(getBinding().messageGroup, empty);
-                if (empty) getBinding().errorTextView.setText(R.string.products_empty);
-
-                adapter.setItems(productContracts);
+                setProducts(productContracts);
             }
         });
 
@@ -92,11 +99,50 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
         });
     }
 
+    private void setProducts(@NonNull List<ProductContract> products) {
+        boolean empty = products.isEmpty();
+        ViewExtensionKt.setVisible(getBinding().messageGroup, empty);
+        if (empty) getBinding().errorTextView.setText(R.string.products_empty);
+
+        adapter.setItems(products);
+
+        if (scrollToTop) {
+            scrollToTop = false;
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getBinding().productRecyclerView.smoothScrollToPosition(0);
+                }
+            }, 400);
+        }
+    }
+
+    private void handleOrderRadioGroupCheckedChange(int checkedId) {
+        switch (checkedId) {
+            case R.id.priceLowHighRadio:
+                orderBy(ProductsOrder.LOW_HIGH);
+                break;
+            case R.id.priceHighLowRadio:
+                orderBy(ProductsOrder.HIGH_LOW);
+                break;
+            case R.id.anyRadio:
+                orderBy(ProductsOrder.ANY);
+                break;
+        }
+    }
+
+    private void orderBy(@NonNull ProductsOrder order) {
+        scrollToTop = true;
+        closeDrawerLayout();
+        getViewModel().orderBy(order);
+
+    }
+
     private void openDrawerLayout() {
         getBinding().drawerLayout.openDrawer(GravityCompat.END, true);
     }
 
-    private void closeDraweLayout() {
+    private void closeDrawerLayout() {
         getBinding().drawerLayout.closeDrawer(GravityCompat.END);
     }
 
@@ -107,7 +153,7 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
     @Override
     public boolean onBackPressed() {
         if (isDrawerLayoutOpen()) {
-            closeDraweLayout();
+            closeDrawerLayout();
             return true;
         }
 
