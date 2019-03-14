@@ -7,6 +7,7 @@ import br.alexandregpereira.amaro.model.product.ProductContract
 import br.alexandregpereira.amaro.exception.ConnectionException
 import br.alexandregpereira.amaro.exception.ConnectionError
 import br.alexandregpereira.amaro.remote.product.ProductRemote
+import br.alexandregpereira.amaro.ui.product.list.ProductsFilter
 import br.alexandregpereira.amaro.ui.product.list.ProductsOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,10 +16,12 @@ import kotlinx.coroutines.launch
 
 open class ProductViewModel : ViewModel() {
 
-    private val liveData = MutableLiveData<List<ProductContract>?>()
     protected open val remote = ProductRemote()
+
+    private val liveData = MutableLiveData<List<ProductContract>?>()
     private val loadingLiveData = MutableLiveData<Boolean?>()
     private val errorLiveData = MutableLiveData<ConnectionError?>()
+    private val filterSet = mutableSetOf<ProductsFilter>()
 
     private var order = ProductsOrder.ANY
     private var anyOrderProducts: List<ProductContract>? = null
@@ -36,18 +39,6 @@ open class ProductViewModel : ViewModel() {
 
     fun getProductByName(name: String): ProductContract? = liveData.value?.find { it.name == name }
 
-    private fun loadProductsRemote() = getCoroutineScopeMain {
-        if (loadingLiveData.value == true) return@getCoroutineScopeMain
-        loadingLiveData.value = true
-        try {
-            anyOrderProducts = remote.getProducts()
-            liveData.value = order(anyOrderProducts)
-        } catch (ex: ConnectionException) {
-            errorLiveData.value = ex.error
-        }
-        loadingLiveData.value = false
-    }
-
     fun getLoadingLiveData(): LiveData<Boolean?> = loadingLiveData
 
     fun getErrorLiveData(): LiveData<ConnectionError?> = errorLiveData
@@ -59,7 +50,48 @@ open class ProductViewModel : ViewModel() {
         if (order == this.order || anyOrderProducts.isNullOrEmpty()) return
         this.order = order
 
-        liveData.value = order(anyOrderProducts)
+        liveData.value = filterAndOrder(anyOrderProducts)
+    }
+
+    fun filterBy(filter: ProductsFilter) {
+        if (filterSet.contains(filter)) {
+            filterSet.remove(filter)
+        } else {
+            filterSet.add(filter)
+        }
+
+        liveData.value = filterAndOrder(anyOrderProducts)
+    }
+
+    private fun filter(products: List<ProductContract>?): List<ProductContract>? {
+        if (filterSet.isEmpty() || products.isNullOrEmpty()) return products
+
+        return products.filter {
+            if (filterSet.contains(ProductsFilter.ON_SALE) && filterSet.contains(ProductsFilter.DISCOUNT))
+                it.onSale && it.hasDiscount()
+            else if (filterSet.contains(ProductsFilter.ON_SALE))
+                it.onSale
+            else if (filterSet.contains(ProductsFilter.DISCOUNT))
+            it.hasDiscount()
+            else
+                false
+        }
+    }
+
+    private fun loadProductsRemote() = getCoroutineScopeMain {
+        if (loadingLiveData.value == true) return@getCoroutineScopeMain
+        loadingLiveData.value = true
+        try {
+            anyOrderProducts = remote.getProducts()
+            liveData.value = filterAndOrder(anyOrderProducts)
+        } catch (ex: ConnectionException) {
+            errorLiveData.value = ex.error
+        }
+        loadingLiveData.value = false
+    }
+
+    private fun filterAndOrder(products: List<ProductContract>?): List<ProductContract>? {
+        return filter(order(products))
     }
 
     private fun order(products: List<ProductContract>?): List<ProductContract>? {

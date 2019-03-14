@@ -32,5 +32,7 @@ class Product : ProductContract {
         return name.hashCode()
     }
 
-
+    override fun toString(): String {
+        return "Product(name='$name', onSale=$onSale, regularPrice='$regularPrice', actualPrice='$actualPrice', discountPercentage='$discountPercentage', installments='$installments', image='$image')"
+    }
 }

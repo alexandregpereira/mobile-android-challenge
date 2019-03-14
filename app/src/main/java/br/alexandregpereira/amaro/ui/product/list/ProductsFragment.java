@@ -99,6 +99,16 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
         });
     }
 
+    @Override
+    public boolean onBackPressed() {
+        if (isDrawerLayoutOpen()) {
+            closeDrawerLayout();
+            return true;
+        }
+
+        return false;
+    }
+
     private void setProducts(@NonNull List<ProductContract> products) {
         boolean empty = products.isEmpty();
         ViewExtensionKt.setVisible(getBinding().messageGroup, empty);
@@ -148,16 +158,6 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
 
     private boolean isDrawerLayoutOpen() {
         return getBinding().drawerLayout.isDrawerOpen(GravityCompat.END);
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        if (isDrawerLayoutOpen()) {
-            closeDrawerLayout();
-            return true;
-        }
-
-        return false;
     }
 
     private void handleConnectionError(@NonNull ConnectionError connectionError) {
