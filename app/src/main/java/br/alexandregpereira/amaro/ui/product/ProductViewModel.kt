@@ -64,7 +64,7 @@ open class ProductViewModel : ViewModel() {
 
     private fun order(products: List<ProductContract>?): List<ProductContract>? {
         if (order == ProductsOrder.ANY) {
-            return products
+            return anyOrderProducts
         }
 
         return products?.sortedWith(Comparator { o1, o2 ->
