@@ -187,6 +187,7 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
     }
 
     private void orderBy(@NonNull ProductsOrder order) {
+        if (!this.isResumed()) return;
         scrollToTop = true;
         closeDrawerLayout();
         getViewModel().orderBy(order);

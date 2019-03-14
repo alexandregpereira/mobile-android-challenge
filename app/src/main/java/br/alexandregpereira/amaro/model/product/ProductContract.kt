@@ -11,6 +11,10 @@ interface ProductContract {
     val image: String
     val sizes: List<Size>
 
+    fun isAvailableSizesEmpty() = getAvailableSizes().isEmpty()
+
+    fun getAvailableSizes() = sizes.filter { it.available }
+
     fun hasDiscount() = discountPercentage.isNotEmpty() && actualPrice != regularPrice
 
     fun getActualPriceNumber(): Double {

@@ -4,6 +4,7 @@
     <string name="try_again">Try Again</string>
     <string name="products_empty">We lost everything</string>
     <string name="menu">Menu</string>
+    <string name="close">Close</string>
 
     <!-- Connection error messages -->
     <string name="no_internet_error">No Internet</string>
@@ -22,5 +23,9 @@
     <string name="drawer_grid">Grid</string>
     <string name="drawer_list">List</string>
     <string name="drawer_any">Any</string>
+
+    <!-- Product detail -->
+    <string name="product_detail_size_label">Sizes</string>
+    <string name="product_detail_not_available">Not Available</string>
 
 </resources>
