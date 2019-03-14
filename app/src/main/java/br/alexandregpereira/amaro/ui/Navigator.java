@@ -2,7 +2,8 @@ package br.alexandregpereira.amaro.ui;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public interface Navigator {
-    void navigateTo(@NonNull Fragment fragment);
+    FragmentTransaction navigateTo(@NonNull Fragment fragment);
 }

@@ -3,11 +3,15 @@ package br.alexandregpereira.amaro.ui.product.list;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -17,9 +21,12 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.transition.Fade;
 import br.alexandregpereira.amaro.R;
 import br.alexandregpereira.amaro.databinding.ProductsFragmentBinding;
 import br.alexandregpereira.amaro.exception.ConnectionError;
@@ -27,6 +34,7 @@ import br.alexandregpereira.amaro.extension.ViewExtensionKt;
 import br.alexandregpereira.amaro.model.product.ProductContract;
 import br.alexandregpereira.amaro.ui.Navigator;
 import br.alexandregpereira.amaro.ui.OnBackPressed;
+import br.alexandregpereira.amaro.ui.product.DetailsTransition;
 import br.alexandregpereira.amaro.ui.product.ProductFragment;
 import br.alexandregpereira.amaro.ui.product.detail.ProductDetailFragment;
 import kotlin.Unit;
@@ -146,7 +154,35 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
     private void navigateToProductDetail(@NonNull ProductContract productContract) {
         FragmentActivity activity = getActivity();
         if (activity instanceof Navigator) {
-            ((Navigator) activity).navigateTo(ProductDetailFragment.newInstance(productContract.getCodeColor()));
+            ProductDetailFragment detailFragment = ProductDetailFragment.newInstance(productContract.getCodeColor());
+
+            detailFragment.setSharedElementEnterTransition(new DetailsTransition());
+            detailFragment.setEnterTransition(new Fade());
+            setExitTransition(new Fade());
+            detailFragment.setSharedElementReturnTransition(new Fade());
+
+            int index = adapter.getItems().indexOf(productContract);
+            RecyclerView.LayoutManager layoutManager = getBinding().productRecyclerView.getLayoutManager();
+
+            FragmentTransaction transaction = ((Navigator) activity).navigateTo(detailFragment);
+            if (layoutManager == null) {
+                transaction.commit();
+                return;
+            }
+
+            View rootView = layoutManager.findViewByPosition(index);
+            if (rootView == null) {
+                transaction.commit();
+                return;
+            }
+
+            View view = rootView.findViewById(R.id.imageView);
+            if (view == null) {
+                transaction.commit();
+                return;
+            }
+
+            transaction.addSharedElement(view, "sharedImage").commit();
         }
     }
 

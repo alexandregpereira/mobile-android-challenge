@@ -3,6 +3,7 @@ package br.alexandregpereira.amaro.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import br.alexandregpereira.amaro.R
 import br.alexandregpereira.amaro.ui.product.list.ProductsFragment
 
@@ -24,11 +25,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         super.onBackPressed()
     }
 
-    override fun navigateTo(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
+    override fun navigateTo(fragment: Fragment): FragmentTransaction {
+        return supportFragmentManager.beginTransaction()
             .addToBackStack(null)
             .replace(R.id.container, fragment, FRAGMENT_TAG)
-            .commit()
     }
 
     companion object {
