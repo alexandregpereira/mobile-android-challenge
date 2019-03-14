@@ -25,15 +25,17 @@ open class ProductViewModel : ViewModel() {
 
     private var order = ProductsOrder.ANY
     private var anyOrderProducts: List<ProductContract>? = null
+    private var cached = false
 
     fun getProductsLiveData(): LiveData<List<ProductContract>?> {
-        loadProductsRemote()
+        if (!cached) loadProductsRemote()
         return liveData
     }
 
     fun getProducts(): List<ProductContract>? = liveData.value
 
     fun refresh() {
+        cached = false
         getProductsLiveData()
     }
 
@@ -53,14 +55,16 @@ open class ProductViewModel : ViewModel() {
         liveData.value = filterAndOrder(anyOrderProducts)
     }
 
-    fun filterBy(filter: ProductsFilter) {
-        if (filterSet.contains(filter)) {
-            filterSet.remove(filter)
-        } else {
-            filterSet.add(filter)
-        }
-
+    fun removeFilter(filter: ProductsFilter): Boolean {
+        if (!filterSet.remove(filter)) return false
         liveData.value = filterAndOrder(anyOrderProducts)
+        return true
+    }
+
+    fun filterBy(filter: ProductsFilter): Boolean {
+        if (!filterSet.add(filter)) return false
+        liveData.value = filterAndOrder(anyOrderProducts)
+        return true
     }
 
     private fun filter(products: List<ProductContract>?): List<ProductContract>? {
@@ -83,6 +87,7 @@ open class ProductViewModel : ViewModel() {
         loadingLiveData.value = true
         try {
             anyOrderProducts = remote.getProducts()
+            cached = true
             liveData.value = filterAndOrder(anyOrderProducts)
         } catch (ex: ConnectionException) {
             errorLiveData.value = ex.error

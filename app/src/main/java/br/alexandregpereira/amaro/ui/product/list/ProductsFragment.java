@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,14 +25,18 @@ import br.alexandregpereira.amaro.databinding.ProductsFragmentBinding;
 import br.alexandregpereira.amaro.exception.ConnectionError;
 import br.alexandregpereira.amaro.extension.ViewExtensionKt;
 import br.alexandregpereira.amaro.model.product.ProductContract;
+import br.alexandregpereira.amaro.ui.Navigator;
 import br.alexandregpereira.amaro.ui.OnBackPressed;
 import br.alexandregpereira.amaro.ui.product.ProductFragment;
+import br.alexandregpereira.amaro.ui.product.detail.ProductDetailFragment;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> implements OnBackPressed {
 
     private final ProductsAdapter adapter = new ProductsAdapter();
-    private boolean scrollToTop = false;
     private final Handler handler = new Handler();
+    private boolean scrollToTop = false;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,6 +59,14 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        adapter.setListener(new Function1<ProductContract, Unit>() {
+            @Override
+            public Unit invoke(@NonNull ProductContract productContract) {
+                navigateToProductDetail(productContract);
+                return null;
+            }
+        });
 
         getBinding().swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -79,14 +92,14 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
         getBinding().drawerContainer.onSaleCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filterBy(ProductsFilter.ON_SALE);
+                filterBy(ProductsFilter.ON_SALE, isChecked);
             }
         });
 
         getBinding().drawerContainer.discountCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filterBy(ProductsFilter.DISCOUNT);
+                filterBy(ProductsFilter.DISCOUNT, isChecked);
             }
         });
 
@@ -124,6 +137,19 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
         return false;
     }
 
+    @Override
+    public void onDestroyView() {
+        scrollToTop = false;
+        super.onDestroyView();
+    }
+
+    private void navigateToProductDetail(@NonNull ProductContract productContract) {
+        FragmentActivity activity = getActivity();
+        if (activity instanceof Navigator) {
+            ((Navigator) activity).navigateTo(ProductDetailFragment.newInstance(productContract.getName()));
+        }
+    }
+
     private void setProducts(@NonNull List<ProductContract> products) {
         boolean empty = products.isEmpty();
         ViewExtensionKt.setVisible(getBinding().messageGroup, empty);
@@ -156,9 +182,8 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
         }
     }
 
-    private void filterBy(@NonNull ProductsFilter filter) {
-        scrollToTop = true;
-        getViewModel().filterBy(filter);
+    private void filterBy(@NonNull ProductsFilter filter, boolean isChecked) {
+        scrollToTop = isChecked ? getViewModel().filterBy(filter) : getViewModel().removeFilter(filter);
     }
 
     private void orderBy(@NonNull ProductsOrder order) {

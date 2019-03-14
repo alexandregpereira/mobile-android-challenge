@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="product"
             type="br.alexandregpereira.amaro.model.product.ProductContract" />
@@ -61,7 +60,6 @@
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
             tools:text="R$ 100,00" />
 
-
         <TextView
             android:id="@+id/regularTextView"
             android:layout_width="0dp"
@@ -99,7 +97,7 @@
             android:id="@+id/group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:constraint_referenced_ids="discountTextView,regularTextView"
             app:visible="@{product.hasDiscount()}" />
 

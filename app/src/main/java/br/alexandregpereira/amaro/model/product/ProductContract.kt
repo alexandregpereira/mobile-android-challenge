@@ -21,5 +21,8 @@ interface ProductContract {
             .toDouble()
     }
 
-    fun getDiscountPercentageOff(): String = "$discountPercentage off"
+    fun getDiscountPercentageOff(): String =
+        if (discountPercentage.isNotEmpty())
+            "$discountPercentage off"
+        else discountPercentage
 }
