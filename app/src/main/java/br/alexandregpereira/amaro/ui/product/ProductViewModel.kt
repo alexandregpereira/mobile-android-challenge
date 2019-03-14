@@ -39,7 +39,7 @@ open class ProductViewModel : ViewModel() {
         getProductsLiveData()
     }
 
-    fun getProductByName(name: String): ProductContract? = liveData.value?.find { it.name == name }
+    fun getProductByCodeColor(codeColor: String): ProductContract? = liveData.value?.find { it.codeColor == codeColor }
 
     fun getLoadingLiveData(): LiveData<Boolean?> = loadingLiveData
 

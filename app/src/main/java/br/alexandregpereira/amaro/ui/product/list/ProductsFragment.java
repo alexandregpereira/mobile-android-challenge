@@ -146,7 +146,7 @@ public class ProductsFragment extends ProductFragment<ProductsFragmentBinding> i
     private void navigateToProductDetail(@NonNull ProductContract productContract) {
         FragmentActivity activity = getActivity();
         if (activity instanceof Navigator) {
-            ((Navigator) activity).navigateTo(ProductDetailFragment.newInstance(productContract.getName()));
+            ((Navigator) activity).navigateTo(ProductDetailFragment.newInstance(productContract.getCodeColor()));
         }
     }
 

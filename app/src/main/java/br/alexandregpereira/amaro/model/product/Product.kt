@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 class Product : ProductContract {
 
     override var name = ""
+    @SerializedName("code_color")
+    override val codeColor: String = ""
     @SerializedName("on_sale")
     override var onSale: Boolean = false
     @SerializedName("regular_price")
@@ -23,16 +25,16 @@ class Product : ProductContract {
 
         other as Product
 
-        if (name != other.name) return false
+        if (codeColor != other.codeColor) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return name.hashCode()
+        return codeColor.hashCode()
     }
 
     override fun toString(): String {
-        return "Product(name='$name', onSale=$onSale, regularPrice='$regularPrice', actualPrice='$actualPrice', discountPercentage='$discountPercentage', installments='$installments', image='$image')"
+        return "Product(name='$name', codeColor='$codeColor', onSale=$onSale, regularPrice='$regularPrice', actualPrice='$actualPrice', discountPercentage='$discountPercentage', installments='$installments', image='$image')"
     }
 }

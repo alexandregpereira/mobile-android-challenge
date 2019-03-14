@@ -13,14 +13,14 @@ import br.alexandregpereira.amaro.ui.product.ProductFragment;
 
 public class ProductDetailFragment extends ProductFragment<ProductDetailFragmentBinding> {
 
-    private static final String NAME_KEY = "NAME_KEY";
+    private static final String CODE_COLOR_KEY = "CODE_COLOR_KEY";
 
-    private String productName;
+    private String productCodeColor;
     private final SizesAdapter sizesAdapter = new SizesAdapter();
 
-    public static ProductDetailFragment newInstance(@NonNull String productName) {
+    public static ProductDetailFragment newInstance(@NonNull String productCodeColor) {
         Bundle bundle = new Bundle();
-        bundle.putString(NAME_KEY, productName);
+        bundle.putString(CODE_COLOR_KEY, productCodeColor);
         ProductDetailFragment fragment = new ProductDetailFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -30,7 +30,7 @@ public class ProductDetailFragment extends ProductFragment<ProductDetailFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
-        productName = getArguments().getString(NAME_KEY);
+        productCodeColor = getArguments().getString(CODE_COLOR_KEY);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ProductDetailFragment extends ProductFragment<ProductDetailFragment
             }
         });
 
-        ProductContract product = getViewModel().getProductByName(productName);
+        ProductContract product = getViewModel().getProductByCodeColor(productCodeColor);
         if (product == null) return;
         getBinding().setProduct(product);
         sizesAdapter.setItems(product.getAvailableSizes());

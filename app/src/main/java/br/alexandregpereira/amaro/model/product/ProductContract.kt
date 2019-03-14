@@ -2,6 +2,7 @@ package br.alexandregpereira.amaro.model.product
 
 interface ProductContract {
 
+    val codeColor: String
     val name: String
     val onSale: Boolean
     val regularPrice: String

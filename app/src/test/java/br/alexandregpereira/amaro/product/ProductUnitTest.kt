@@ -24,6 +24,7 @@ class ProductUnitTest {
         assertEquals(22, products.size)
         products[0].apply {
             assertTrue(name.isNotEmpty())
+            assertTrue(codeColor.isNotEmpty())
             assertFalse(onSale)
             assertTrue(regularPrice.isNotEmpty())
             assertTrue(actualPrice.isNotEmpty())
@@ -44,12 +45,13 @@ class ProductUnitTest {
     fun getProductByName_objIsAllRight() {
         val viewModel = ProductTestViewModel()
         viewModel.getProductsLiveData()
-        val product = viewModel.getProductByName("T-SHIRT LEATHER DULL")
+        val product = viewModel.getProductByCodeColor("20002602_027")
         assertNotNull(product)
         if (product == null) return
 
         product.apply {
             assertEquals("T-SHIRT LEATHER DULL", name)
+            assertEquals("20002602_027", codeColor)
             assertTrue(onSale)
             assertTrue(regularPrice.isNotEmpty())
             assertTrue(actualPrice.isNotEmpty())

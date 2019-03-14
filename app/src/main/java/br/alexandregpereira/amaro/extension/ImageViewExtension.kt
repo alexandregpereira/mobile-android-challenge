@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 
 
 @BindingAdapter("loadImageUrl")
-fun ImageView.loadImageUrl(url: String = "") {
+fun ImageView.loadImageUrl(url: String?) {
     val options = RequestOptions()
         .placeholder(R.drawable.placeholder)
 
