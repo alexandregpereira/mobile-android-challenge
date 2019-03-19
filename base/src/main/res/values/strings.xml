@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Amaro Challenge</string>
+
+    <!-- Connection error messages -->
+    <string name="no_internet_error">No Internet</string>
+    <string name="no_connection_error">No Connection</string>
+    <string name="timeout_error">Timeout. Try Again</string>
+    <string name="unknown_error">I think we have some problem</string>
+
+</resources>
