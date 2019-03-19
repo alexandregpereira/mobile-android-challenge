@@ -73,6 +73,8 @@ public class ProductDetailFragment extends ProductFragment {
         ViewExtensionKt.setStrikeThru(viewHolder.regularTextView, true);
         ViewExtensionKt.setVisible(viewHolder.notAvailableLabelTextView, !product.getOnSale());
         ViewExtensionKt.setVisible(viewHolder.group, product.hasDiscount());
+        ViewExtensionKt.setVisible(viewHolder.regularTextView, product.hasDiscount());
+        ViewExtensionKt.setVisible(viewHolder.discountTextView, product.hasDiscount());
         ViewExtensionKt.setVisible(viewHolder.sizesGroup, !product.isAvailableSizesEmpty());
         sizesAdapter.setItems(product.getAvailableSizes());
     }

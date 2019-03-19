@@ -25,6 +25,8 @@ class ProductsAdapter : DefaultAdapter<ProductContract, ProductsAdapter.ViewHold
         holder.imageView.loadImageUrl(product.image)
         holder.regularTextView.setStrikeThru(true)
         holder.group.setVisible(product.hasDiscount())
+        holder.discountTextView.setVisible(product.hasDiscount())
+        holder.regularTextView.setVisible(product.hasDiscount())
 
         holder.discountTextView.text = product.getDiscountPercentageOff()
         holder.titleTextView.text = product.name

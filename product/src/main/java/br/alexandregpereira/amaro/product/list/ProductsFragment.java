@@ -193,6 +193,8 @@ public class ProductsFragment extends ProductFragment implements OnBackPressed {
     private void setProducts(@NonNull List<ProductContract> products) {
         boolean empty = products.isEmpty();
         ViewExtensionKt.setVisible(viewHolder.messageGroup, empty);
+        ViewExtensionKt.setVisible(viewHolder.tryAgainButton, empty);
+        ViewExtensionKt.setVisible(viewHolder.errorTextView, empty);
         if (empty) viewHolder.errorTextView.setText(R.string.products_empty);
 
         adapter.setItems(products);
@@ -260,11 +262,15 @@ public class ProductsFragment extends ProductFragment implements OnBackPressed {
     private void showErrorMessage(@StringRes int message) {
         if (getViewModel().isLiveDataEmpty()) {
             ViewExtensionKt.setVisible(viewHolder.messageGroup, true);
+            ViewExtensionKt.setVisible(viewHolder.errorTextView, true);
+            ViewExtensionKt.setVisible(viewHolder.tryAgainButton, true);
             viewHolder.errorTextView.setText(message);
             return;
         }
 
         ViewExtensionKt.setVisible(viewHolder.messageGroup, false);
+        ViewExtensionKt.setVisible(viewHolder.tryAgainButton, false);
+        ViewExtensionKt.setVisible(viewHolder.errorTextView, false);
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
